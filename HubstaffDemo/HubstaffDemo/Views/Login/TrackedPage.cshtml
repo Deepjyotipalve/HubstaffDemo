@@ -1,0 +1,167 @@
+﻿@model HubstaffDemo.Models.User
+@{
+    int UserID = (int)Session["Id"];
+
+}
+<style>
+    body {
+        /* background-image: url('/Pictures/TP.jpg');
+        background-size: cover;
+        background-position: center; */
+    }
+    .centered {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+   
+</style>
+<div class="centered">
+    <p><h2>Elapsed Time: <span id="elapsedTime">00:00:00</span></h2></p>
+</div>
+<input type="hidden" id="lastLogoutTime" value="@Model.LastLogoutTime? .ToString(" yyyy-MM-ddTHH:mm:ss")" />
+<div class="col-md-3">
+    @Html.Partial("_TeamSidebar")
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="float-lg-end mt-2">
+            <button id="startButton" class="btn btn-outline-success">Start Time</button>
+            <button id="stopButton" class="btn btn-outline-danger" disabled>Stop Time</button>
+            <button id="logoutButton" class="btn btn-outline-primary">Logout</button>
+            @*<i class="fas fa-sign-out-alt ml-1"></i>*@
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+var startTime;
+var isTracking = false;
+var elapsedMilliseconds = 0;
+var userId = "@UserID"; // Assuming you have a unique user identifier in your model
+
+// Load elapsed time from localStorage
+if (localStorage.getItem("elapsedTime" + userId)) {
+    elapsedMilliseconds = parseInt(localStorage.getItem("elapsedTime" + userId));
+}
+
+function startTracking() {
+    startTime = new Date().getTime();
+    isTracking = true;
+
+    document.getElementById("startButton").disabled = true;
+    document.getElementById("stopButton").disabled = false;
+    localStorage.setItem("startTime" + userId, startTime.toString());
+    alert("Tracking has started.");
+}
+
+function stopTracking() {
+    if (isTracking) {
+        isTracking = false;
+        elapsedMilliseconds += new Date().getTime() - startTime;
+    $.ajax({
+       url: '@Url.Action("StopTracking", "Login")',
+       type: 'POST',
+       data: { elapsedMilliseconds: elapsedMilliseconds },
+       success: function () {
+           // Do something on success if needed
+       },
+       error: function () {
+           console.error('Error updating elapsed time on the server.');
+       }
+   });
+        // Store elapsed time in localStorage
+        localStorage.setItem("elapsedTime" + userId, elapsedMilliseconds.toString());
+        document.getElementById("startButton").disabled = false;
+        document.getElementById("stopButton").disabled = true;
+    }
+}
+
+function updateElapsedTime() {
+    var currentTime = new Date().getTime();
+    var currentElapsed = isTracking ? elapsedMilliseconds + (currentTime - startTime) : elapsedMilliseconds;
+    var hours = Math.floor(currentElapsed / 3600000);
+    var minutes = Math.floor((currentElapsed % 3600000) / 60000);
+    var seconds = Math.floor((currentElapsed % 60000) / 1000);
+
+    var elapsedTimeString = pad(hours, 2) + ":" + pad(minutes, 2) + ":" + pad(seconds, 2);
+    document.getElementById("elapsedTime").innerText = elapsedTimeString;
+}
+
+  function logout() {
+    debugger;
+      var confirmResult = window.confirm("Going To Dashboard");
+
+    if (confirmResult) {
+
+        stopTracking();
+
+
+
+        $.ajax({
+
+            url: '@Url.Action("UpdateElapsedTime", "Login")',
+            type: 'POST',
+            data: { elapsedMilliseconds: elapsedMilliseconds },
+            success: function () {
+
+            },
+            error: function () {
+                console.error('Error updating elapsed time on the server.');
+            }
+        });
+        var totalHours = elapsedMilliseconds / (1000 * 60 * 60);
+        /*   updateTotalHours(totalHours);*/
+        //localStorage.removeItem('elapsedTime' + userId);
+        redirectToUserInformation();
+    } else {
+        alert("Welcome.");
+    }
+}
+
+    function redirectToUserInformation() {
+        debugger;
+        alert("Welcome successful.");
+        window.location.href = '@Url.Action("UserDashboard", "Dashboard")';
+    }
+
+
+function pad(num, size) {
+    var s = "000000000" + num;
+    return s.substr(s.length - size);
+    }
+    window.onbeforeunload = function () {
+        if (isTracking) {
+            var currentTime = new Date().getTime();
+
+            elapsedMilliseconds += currentTime - startTime;
+            $.ajax({
+              
+                  url:'@Url.Action("SetElapsedTimeToSession", "Login")',
+                type: 'POST',
+                data: { elapsedMilliseconds: elapsedMilliseconds },
+                success: function (response) {
+                    // Do something with the response if needed
+                }
+            });
+
+            localStorage.setItem("elapsedTime" + userId, elapsedMilliseconds.toString());
+
+        }
+    };
+
+    document.getElementById("startButton").addEventListener("click", startTracking);
+    document.getElementById("stopButton").addEventListener("click", stopTracking);
+    document.getElementById("logoutButton").addEventListener("click", logout);
+  setInterval(updateElapsedTime, 1000); // update every second
+    updateElapsedTime();
+
+</script>

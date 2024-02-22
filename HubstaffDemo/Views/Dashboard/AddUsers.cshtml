@@ -1,0 +1,121 @@
+﻿@model HubstaffDemo.Models.User
+
+@{
+    ViewBag.Title = "Add Team member";
+    int OrganizationID = (int)Session["Id"];
+}
+
+<link rel="stylesheet" href="~/Content/all.min.css">
+<link rel="stylesheet" href="~/Content/style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>Add Team member</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10 input-group">
+            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", id = "userPassword", type = "password" } })
+            <div class="input-group-append">
+                <span class="input-group-text">
+                    <i class="fa fa-eye" id="togglePassword"></i>
+                </span>
+            </div>
+            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Designation, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Designation, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Designation, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    @*<div class="form-group mt-3">
+        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.IsActive)
+                @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>*@
+    <div class="form-group mt-3">
+        <div class="form-check col-md-10">
+            @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-check-input" } })
+            @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "form-check-label" })
+            @*<div>*@
+
+            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+            @*</div>*@
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10 ">
+            <input type="submit" value="Create" class="btn btn-primary" /> |
+            @Html.ActionLink("Back to List", "OrganizationDashboard")
+        </div>
+    </div>
+</div>
+}
+
+
+@section Scripts {
+    <script>
+        window.onload = function () {
+            generatePassword('userPassword');
+
+        }
+
+        function generatePassword(inputId) {
+            var length = 8,
+                charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                retVal = "";
+            for (var i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+            }
+            document.getElementById(inputId).value = retVal;
+        }
+        $(document).ready(function () {
+            $("#togglePassword").click(function () {
+                var passwordField = $("#userPassword");
+                var type = passwordField.attr("type");
+                if (type === "password") {
+                    passwordField.attr("type", "text");
+                    $("#togglePassword").removeClass("fa-eye").addClass("fa-eye-slash");
+                } else {
+                    passwordField.attr("type", "password");
+                    $("#togglePassword").removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+            });
+        });
+
+    </script>
+
+}

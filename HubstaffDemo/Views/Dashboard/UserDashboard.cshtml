@@ -1,0 +1,44 @@
+﻿
+@{
+    ViewBag.Title = "UserDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = Context.Session["_UserID"];
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-3">
+            @Html.Partial("_TeamSidebar")
+        </div>
+        <div>
+            @*@Html.Action("CaptureUrls", "Dashboard")*@
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        var userid = '@Context.Session["_UserID"]';
+        var startflag = '@Context.Session["startflag"]';
+        var storeflag = '@Context.Session["StoredFlag"]';
+        if (startflag == "true" && storeflag == "false") {
+            localStorage.setItem("exitTime" + userid, new Date().getTime());
+            $.ajax({
+                url: '@Url.Action("UpdateFlagValue", "Login")',
+                type: 'POST',
+                data: { start: "true", stored: "true" },
+                success: function () {
+                    // Do something on success if needed
+                },
+                error: function () {
+                    console.error('Error updating elapsed time on the server.');
+                }
+            });
+        }
+    });
+</script>
+
+
+

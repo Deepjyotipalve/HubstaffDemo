@@ -1,0 +1,100 @@
+﻿@model HubstaffDemo.Models.User
+@{
+    ViewBag.Title = "UserInformation";
+    var Name = Session["LoginName"];
+    int UserID = (int)Session["Id"];
+    //var time = Session["LoginTime"];
+}
+
+
+
+<style>
+    body {
+        background-image: url('/Pictures/person.jpg');
+        background-size: cover;
+        background-position: center;
+    }
+
+    #totalHours {
+        color: red;
+        text-align: center;
+    }
+
+    #username {
+        text-align: end;
+    }
+
+    .start-tracking-btn {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .centered {
+        position: fixed;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+@Scripts.Render("~/bundles/jqueryval")
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="float-lg-end mt-2">
+                <button class="start-tracking-btn" onclick="location.href='@Url.Action("StartTracking", "Login")'" @(ViewBag.DisableStartTracking != null && ViewBag.DisableStartTracking ? "disabled='disabled'" : "")>Start Tracking</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="centered">
+    @if (Model != null)
+    {
+        <p id="username"><h2>Hello, @Name!</h2></p>
+
+        @*<p><h3>Your Login Time: @(Session["LoginTime"] != null ? ((DateTime)Session["LoginTime"]).ToString("HH:mm:ss") : "")</h3></p>*@
+
+        <input type="hidden" id="lastLogoutTime" value="@Model.LastLogoutTime?.ToString(" yyyy-MM-ddTHH:mm:ss")" />
+    }
+    else
+    {
+        <p>You are not logged in.</p>
+    }
+</div>
+<div class="col-md-3">
+    @Html.Partial("_TeamSidebar")
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+
+    $(document).ready(function () {
+       
+        var userid = '@Context.Session["Id"]';
+        var startflag = '@Context.Session["startflag"]';
+        var storeflag = '@Context.Session["StoredFlag"]';
+        debugger
+        if (startflag == "true" && storeflag == "false") {
+      
+            localStorage.setItem("exitTime" + userid, new Date().getTime());
+            $.ajax({
+                url: '@Url.Action("UpdateFlagValue", "Login")',
+                type: 'POST',
+                data: { start: "true", stored: "true" },
+                success: function () {
+                    // Do something on success if needed
+                },
+                error: function () {
+                    console.error('Error updating elapsed time on the server.');
+                }
+            });
+        }
+    });
+</script>
+

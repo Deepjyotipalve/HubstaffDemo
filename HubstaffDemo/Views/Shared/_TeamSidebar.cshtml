@@ -1,0 +1,152 @@
+﻿
+@{
+    int UserID = (int)Session["Id"];
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <style>
+        body {
+            padding-top: 56px;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #17a2b8;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 20px;
+            color: white;
+        }
+
+            .sidebar a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 20px;
+                color: black;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidebar a:hover {
+                    color: #f1f1f1;
+                }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 250px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            position: fixed;
+            z-index: 2;
+            top: 10px;
+            left: 10px;
+            display: block; /* Ensure the button is always visible */
+        }
+
+        .custom-btn {
+            /* Add your custom styles here */
+        }
+
+            .custom-btn:hover,
+            .custom-btn:focus {
+            }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar sidebar-offcanvas fixed-nav" id="sidebar">
+        <ul class="nav">
+            <li class="nav-item nav-profile">
+                <div class="nav-link">
+                    <div class="profile-name">
+                        <p class="name" style="margin-top:18px; margin-bottom: initial; color:black;">
+                            Welcome Team
+                        </p>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("UserInformation", "Login")">
+                    <i class="fa fa-clock menu-icon"></i>
+                    <span class="menu-title">Timesheet</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" style="margin-right:50px" href="@Url.Action("Index", "Home")">
+                    <i class="fa fa-question-circle menu-icon"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" style="margin-right:50px" href="@Url.Action("Index", "FAQ")">
+                    <i class="fa fa-question-circle menu-icon"></i>
+                    <span class="menu-title">FAQ</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" onclick="siderbarlogout()" href="@Url.Action("Logout", "Login")">
+                    <i class="fa fa-sign-out-alt menu-icon"></i>
+                    <span class="menu-title">Logout</span>
+                </a>
+            </li>
+
+
+
+        </ul>
+
+    </nav>
+
+    <div id="main">
+        <div class="openbtn" onclick="toggleNav()">☰</div>
+
+    </div>
+
+
+
+    <script>
+        var userId = "@UserID";
+        function siderbarlogout() {
+            if (typeof stopTracking === "function") {
+                stopTracking();
+            }
+            localStorage.removeItem('elapsedTime' + userId);
+        }
+        function toggleNav() {
+            var sidebar = document.getElementById("sidebar");
+            var main = document.getElementById("main");
+
+            if (sidebar.style.width === "250px") {
+                sidebar.style.width = "0";
+                main.style.marginLeft = "0";
+            } else {
+                sidebar.style.width = "250px";
+                main.style.marginLeft = "250px";
+            }
+        }
+
+    </script>
+
+</body>
+</html>
+
+
+
+

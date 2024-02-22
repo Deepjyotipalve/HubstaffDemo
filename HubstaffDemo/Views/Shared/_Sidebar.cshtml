@@ -1,0 +1,46 @@
+﻿<nav class="sidebar sidebar-offcanvas fixed-nav" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item nav-profile">
+            <div class="nav-link">
+                <div class="profile-name">
+                    <div>
+
+                    </div>
+                    <p class="name" style="margin-top:18px; margin-bottom: initial; color:black;">
+                        Welcome Admin
+                    </p>
+                </div>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("AdminDashboard", "Dashboard")">
+                <i class="fa fa-home menu-icon"></i>
+                <span class="menu-title">Dashboard</span>
+            </a>
+        </li>
+        @*<li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Index", "Home")">
+                <i class="fa fa-home menu-icon"></i>
+                <span class="menu-title">Home</span>
+            </a>
+        </li>*@
+        <li class="nav-item">
+            <a class="nav-link" style="margin-right:50px" href="@Url.Action("Index", "FAQ")">
+                <i class="fa fa-question-circle menu-icon"></i>
+                <span class="menu-title">FAQ</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("AddAdmin", "Dashboard")">
+                <i class="fa fa-user-plus menu-icon"></i>
+                <span class="menu-title">Add Organization</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("Logout", "Login")">
+                <i class="fa fa-sign-out-alt menu-icon"></i>
+                <span class="menu-title">Logout</span>
+            </a>
+        </li>
+    </ul>
+</nav>

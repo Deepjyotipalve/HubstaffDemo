@@ -1,0 +1,122 @@
+﻿@model HubstaffDemo.Models.LoginData
+@{
+    ViewBag.Title = "Login";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="~/Content/all.min.css">
+    <link rel="stylesheet" href="~/Content/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+</head>
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-stretch auth auth-img-bg">
+                <div class="row flex-grow">
+                    <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                        <div class="auth-form-transparent text-left p-3">
+
+
+                            <form method="post" action="@Url.Action("Login", "Login")">
+                                @{if (!string.IsNullOrEmpty(ViewBag.Error))
+                                    {
+                                        <div class="alert alert-danger">
+                                            @ViewBag.Error
+                                        </div>
+                                    }
+                                }
+                                @Html.AntiForgeryToken()
+                                @*<div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend bg-transparent">
+                                                <span class="input-group-text bg-transparent border-right-0">
+                                                    <i class="far fa-user text-primary"></i>
+                                                </span>
+                                            </div>
+                                            <input class="form-control form-control-lg border-left-0" type="email"
+                                                   name="email" placeholder="Email">
+                                        </div>
+                                        @if (!ViewData.ModelState.IsValidField("email"))
+                                        {
+                                          <p class="text-danger"style="color:red">@Html.ValidationMessage("email")</p>
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend bg-transparent">
+                                                <span class="input-group-text bg-transparent border-right-0">
+                                                    <i class="fa fa-lock text-primary"></i>
+                                                </span>
+                                            </div>
+                                            <input class="form-control form-control-lg border-left-0 password" id="passport"
+                                                   type="password" name="password" placeholder="Password">
+                                        </div>
+                                        @if (!ViewData.ModelState.IsValidField("Password"))
+                                        {
+                                          <p class="text-danger" style="color:red">@Html.ValidationMessage("Password")</p>
+                                        }
+                                    </div>*@
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <i class="far fa-user text-primary"></i>
+
+                                    </span>
+
+                                    <input class="form-control form-control-lg border-left-0" type="email"
+                                           name="email" placeholder="Email" required>
+
+
+                                </div>
+                                <br />
+                                <div class="input-group-prepend bg-transparent">
+                                    <span class="input-group-text bg-transparent border-right-0">
+                                        <i class="fa fa-lock text-primary"></i>
+                                    </span>
+                                    <input class="form-control form-control-lg border-left-0 password" id="passport"
+                                           type="password" name="password" placeholder="Password" required>
+                                    <span class="input-group-text bg-transparent border-left-0" onclick="togglePasswordVisibility()">
+                                        <i class="far fa-eye" id="passwordToggle"></i>
+                                    </span>
+                                </div>
+
+
+                                <div class="my-3">
+                                    <button type="submit"
+                                            class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">
+                                        Login
+                                    </button>
+                                    <div class="border-line"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    function togglePasswordVisibility() {
+        var passwordInput = document.getElementById("passport");
+        var passwordToggleIcon = document.getElementById("passwordToggle");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            passwordToggleIcon.classList.remove("fa-eye");
+            passwordToggleIcon.classList.add("fa-eye-slash");
+        } else {
+            passwordInput.type = "password";
+            passwordToggleIcon.classList.remove("fa-eye-slash");
+            passwordToggleIcon.classList.add("fa-eye");
+        }
+    }
+</script>
+

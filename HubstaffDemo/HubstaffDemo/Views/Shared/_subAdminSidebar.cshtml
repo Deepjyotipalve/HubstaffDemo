@@ -1,0 +1,156 @@
+﻿
+@{
+    // ViewBag.Title = "Dashboard";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <style>
+        body {
+            padding-top: 56px;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 20px;
+            color: white;
+        }
+
+            .sidebar a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 20px;
+                color: #818181;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidebar a:hover {
+                    color: #f1f1f1;
+                }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 250px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            position: fixed;
+            z-index: 2;
+            top: 10px;
+            left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar sidebar-offcanvas fixed-nav" id="sidebar">
+        <ul class="nav">
+            <li class="nav-item nav-profile">
+                <div class="nav-link">
+                    <div class="profile-name">
+                        <p class="name">
+                            Welcome Organization
+                        </p>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                @*<a class="@Html.Raw(Request.Url.PathAndQuery.Contains("dashboard") ? "nav-link active" : "nav-link")"*@
+                <a class="nav-link" href="@Url.Action("Dashboard", "Dashboard")">
+                    <i class="fa fa-home menu-icon"></i>
+                    <span class="menu-title">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "Home")">
+                    <i class="fa fa-home menu-icon"></i>
+                    <span class="menu-title">Home</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("DisplayWebHistory", "Dashboard")">
+                    <i class="fa fa-clock menu-icon"></i>
+                    <span class="menu-title">Web History</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Index", "FAQ")">
+                    <i class="fa fa-question-circle menu-icon"></i>
+                    <span class="menu-title">FAQ</span>
+                </a>
+            </li>
+
+            @*<li class="nav-item">
+                    <a class="nav-link" href="@Url.Action("Index", "OrganizationUsers")">
+                        <i class="fa fa-users menu-icon"></i>
+                        <span class="menu-title">Clients</span>
+                    </a>
+                </li>*@
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("AddUsers", "Dashboard")">
+                    <i class="fa fa-user-plus menu-icon"></i>
+                    <span class="menu-title">Add Team</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="@Url.Action("Logout", "Login")">
+                    <i class="fa fa-sign-out-alt menu-icon"></i>
+                    <span class="menu-title">Logout</span>
+                </a>
+            </li>
+        </ul>
+        <!-- Add more menu items as needed -->
+
+    </nav>
+
+    <div id="main">
+        <div class="openbtn" onclick="toggleNav()">☰</div>
+        <!--<div class="content">-->
+        @*<h2>Main Content</h2>*@
+        <!-- Your content goes here -->
+        <!--</div>-->
+    </div>
+
+    <!-- Include your scripts, such as jQuery, Bootstrap, and any other dependencies -->
+
+    <script>
+    function toggleNav() {
+        var sidebar = document.getElementById("sidebar");
+        var main = document.getElementById("main");
+
+        if (sidebar.style.width === "250px") {
+            sidebar.style.width = "0";
+            main.style.marginLeft = "0";
+        } else {
+            sidebar.style.width = "250px";
+            main.style.marginLeft = "250px";
+        }
+    }
+    </script>
+
+</body>
+</html>
+
+

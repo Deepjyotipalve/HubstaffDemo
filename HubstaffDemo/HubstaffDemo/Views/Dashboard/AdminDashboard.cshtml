@@ -1,0 +1,114 @@
+﻿@model IEnumerable<HubstaffDemo.Models.Organization>
+@{
+    ViewBag.Title = "AdminDashboard";
+}
+
+<h2>AdminDashboard</h2>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-3">
+            @Html.Partial("_Sidebar")
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.ConfirmPassword)
+            </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrganizationName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TeamSize)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.City)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganizationName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeamSize)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "EditAdmin", new { Id = item.Id })
+                @Html.ActionLink("Delete", "DeleteAdmin", new { Id = item.Id })
+                <div class="dropdown position-static">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="bi bi-download">Download</i>
+                    </button>
+                    <div class="dropdown-menu position-absolute" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="@Url.Action("DownloadData", "Dashboard", new { email = item.Email, dataType = "Urls" })">URLs</a>
+                        <a class="dropdown-item" href="@Url.Action("DownloadData", "Dashboard", new { email = item.Email, dataType = "TotalHours" })">Total Hours</a>
+                        <a class="dropdown-item" href="@Url.Action("DownloadData", "Dashboard", new { email = item.Email, dataType = "Screenshots" })">Screenshots</a>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+    }
+
+</table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Add Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		var successMessage = '@TempData["SuccessMessage"]';
+		var errorMessage = '@TempData["ErrorMessage"]';
+		console.log('Success message:', successMessage);
+		console.log('Error message:', errorMessage);
+		if (successMessage) {
+			toastr.success(successMessage);
+		}
+
+		if (errorMessage) {
+			toastr.error(errorMessage);
+		}
+	});
+</script>

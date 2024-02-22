@@ -1,0 +1,114 @@
+﻿@model HubstaffDemo.Models.Organization
+
+@{
+    ViewBag.Title = "AddOrganization";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="container mt-4">
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <h4>User Information</h4>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group" id="OrgnazationPassword">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label" })
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control" , id="orgnazationPassword"})
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <!--today add 11/1/2023-->
+                @*<div class="form-group">
+                        @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Role, ViewBag.Role as SelectList, "Select Role", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                    </div>*@
+                <!-- Add other user-related fields here -->
+            </div>
+
+            <div class="col-md-6">
+                <h4>Organization Information</h4>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.OrganizationName, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.OrganizationName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.OrganizationName, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                </div>
+
+                @*<div class="form-group">
+                        @Html.LabelFor(model => model.NumberOfPersons, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.NumberOfPersons, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NumberOfPersons, "", new { @class = "text-danger" })
+                    </div>*@
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TeamSize, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.TeamSize, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.TeamSize, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <div class="form-check">
+                        @Html.LabelFor(model => model.IsActive, htmlAttributes: new { @class = "form-check-label" })
+                        <div>
+                            @Html.EditorFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-check-input" } })
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <!--today add 11/1/2023-->
+                <!-- Add other organization-related fields here -->
+            </div>
+        </div>
+
+        <div class="form-group mt-4">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "AdminDashboard")
+</div>
+@section Scripts {
+    <script>
+        window.onload = function () {
+            generatePassword('orgnazationPassword');
+
+        }
+
+        function generatePassword(inputId) {
+            var length = 8,
+                charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+                retVal = "";
+            for (var i = 0, n = charset.length; i < length; ++i) {
+                retVal += charset.charAt(Math.floor(Math.random() * n));
+            }
+            document.getElementById(inputId).value = retVal;
+        }</script>
+
+}
+

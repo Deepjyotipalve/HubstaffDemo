@@ -1,0 +1,211 @@
+﻿@model IEnumerable<HubstaffDemo.Models.User>
+
+@{
+    ViewBag.Title = "SubAdminDashboard";
+}
+
+
+
+@{
+   
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Add Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <style>
+        body {
+            padding-top: 56px;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #17a2b8;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 20px;
+            color: white;
+        }
+
+            .sidebar a {
+                padding: 8px 8px 8px 32px;
+                text-decoration: none;
+                font-size: 20px;
+                color: black;
+                display: block;
+                transition: 0.3s;
+            }
+
+                .sidebar a:hover {
+                    color: #f1f1f1;
+                }
+
+        #main {
+            transition: margin-left .5s;
+            padding: 16px;
+            margin-left: 250px;
+        }
+
+        .openbtn {
+            font-size: 20px;
+            cursor: pointer;
+            position: fixed;
+            z-index: 2;
+            top: 10px;
+            left: 10px;
+            display: block; /* Ensure the button is always visible */
+        }
+
+        .custom-btn {
+            /* Add your custom styles here */
+        }
+            .custom-btn:hover,
+            .custom-btn:focus {
+            }
+    </style>
+</head>
+@Html.Partial("_subAdminSidebar")
+<div id="main">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 style="display:flex;justify-content:center">Organization Dashboard</h2>
+                <table  class="table table-bordered border-primary">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UId)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Designation)
+                        </th>
+
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.IsActive)
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UId)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+
+                            <td class="text-center">
+                                @Html.DisplayFor(modelItem => item.Designation)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IsActive)
+                            </td>
+
+                            <td>
+                                <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                                    @Html.ActionLink("Edit", "EditUser", new { Id = item.UId }, new { @class = "btn btn-primary custom-btn mr-2 rounded-pill", @role = "button" })
+                                    @Html.ActionLink("Delete", "DeleteUser", new { Id = item.UId }, new { @class = "btn btn-danger custom-btn rounded-pill", @role = "button" })
+                                </div>
+                                <div class="dropdown position-static">
+                                    <button class="btn btn-info dropdown-toggle custom-btn rounded-pill" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="bi bi-download">Download</i>
+                                    </button>
+                                    <div class="dropdown-menu position-absolute" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" href="@Url.Action("DownloadUserData", "Dashboard", new {id=item.Id, email = item.Email, dataType = "Urls" })">URLs</a>
+                                        <a class="dropdown-item" href="@Url.Action("DownloadUserData", "Dashboard", new {id=item.Id, email = item.Email, dataType = "TotalHours" })">Total Hours</a>
+                                        <a class="dropdown-item" href="@Url.Action("DownloadUserData", "Dashboard", new { id=item.Id,email = item.Email, dataType = "Screenshots" })">Screenshots</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+              
+<div class="openbtn" id="sidebarCollapseBtn" onclick="toggleNav()">☰</div>
+<script>
+     $(document).ready(function () {
+         var UserAddmessage = '@TempData["UserAdded"]';
+         var UserUpdateMsg = '@TempData["UserUpdate"]';
+         var UserDeleteMsg = '@TempData["UserDelete"]';
+		var successMessage = '@TempData["SuccessMessage"]';
+		var errorMessage = '@TempData["ErrorMessage"]';
+		console.log('Success message:', successMessage);
+		console.log('Error message:', errorMessage);
+		if (successMessage) {
+			toastr.success(successMessage);
+		}
+         if (UserAddmessage) {
+             toastr.success(UserAddmessage);
+         }
+         if (UserUpdateMsg) {
+             toastr.success(UserUpdateMsg);
+         }
+         if (UserDeleteMsg) {
+             toastr.success(UserDeleteMsg);
+         }
+		if (errorMessage) {
+			toastr.error(errorMessage);
+		}
+    });
+     function toggleNav() {
+         var sidebar = document.getElementById("sidebar");
+         var main = document.getElementById("main");
+         var sidebarCollapseBtn = document.getElementById("sidebarCollapseBtn");
+
+         if (sidebar.style.width === "250px") {
+             sidebar.style.width = "0";
+             main.style.marginLeft = "0";
+             sidebarCollapseBtn.innerHTML = "☰"; // Change the button text to ☰ when closing
+         } else {
+             sidebar.style.width = "250px";
+             main.style.marginLeft = "250px";
+             sidebarCollapseBtn.innerHTML = "✖"; // Change the button text to ✖ when opening
+         }
+     }
+
+     // Check the initial width of the sidebar to set the initial icon
+     if (document.getElementById("sidebar").style.width === "250px") {
+         document.getElementById("sidebarCollapseBtn").innerHTML = "✖"; // Set the initial icon to ✖ if the sidebar is initially open
+     } else {
+         document.getElementById("sidebarCollapseBtn").innerHTML = "☰"; // Set the initial icon to ☰ if the sidebar is initially closed
+     }
+</script>

@@ -1,0 +1,127 @@
+﻿@model IEnumerable<HubstaffDemo.Models.User>
+
+@{
+    ViewBag.Title = "SubAdminDashboard";
+}
+
+
+
+@{
+    // ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-md-3">
+            @Html.Partial("_subAdminSidebar")
+        </div>
+
+
+        @*<div class="col-md-9">
+                <h2>Welcome to the SubAdminDashboard!</h2>
+                @Html.Action("OrganizationDashboard", "Dashboard")
+            </div>*@
+
+    </div>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        @*<th>
+                @Html.DisplayNameFor(model => model.Password)
+            </th>*@
+        @*<th>
+                @Html.DisplayNameFor(model => model.ConfirmPassword)
+            </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Designation)
+        </th>
+
+
+        <th>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </th>
+
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>*@
+
+
+            @*<td>
+                    @Html.DisplayFor(modelItem => item.ConfirmPassword)
+                </td>*@
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Designation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsActive)
+            </td>
+
+            <td>
+                @Html.ActionLink("Edit", "EditUser", new { Id = item.UId }) |
+                @*@Html.ActionLink("Detail", "Detail", new { Id = item.Id }) |*@
+                @Html.ActionLink("Delete", "DeleteUser", new { Id = item.UId })
+                <div class="dropdown position-static">
+                    <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="bi bi-download">Download</i>
+                    </button>
+                    <div class="dropdown-menu position-absolute" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="@Url.Action("DownloadData", "Dashboard", new { email = item.Email, dataType = "Urls" })">URLs</a>
+                        <a class="dropdown-item" href="@Url.Action("DownloadData", "Dashboard", new { email = item.Email, dataType = "TotalHours" })">Total Hours</a>
+                        <a class="dropdown-item" href="@Url.Action("DownloadData", "Dashboard", new { email = item.Email, dataType = "Screenshots" })">Screenshots</a>
+                    </div>
+                </div>
+
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Add Toastr JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<script>
+	$(document).ready(function() {
+		var successMessage = '@TempData["SuccessMessage"]';
+		var errorMessage = '@TempData["ErrorMessage"]';
+		console.log('Success message:', successMessage);
+		console.log('Error message:', errorMessage);
+		if (successMessage) {
+			toastr.success(successMessage);
+		}
+
+		if (errorMessage) {
+			toastr.error(errorMessage);
+		}
+	});
+</script>

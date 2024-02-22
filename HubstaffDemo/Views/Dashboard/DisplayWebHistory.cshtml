@@ -1,0 +1,31 @@
+﻿
+@model string
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Web History</title>
+    <style>
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+            background-color: #f9f9f9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Web History</h2>
+    <ul>
+        @foreach (var item in Model.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries))
+        {
+            <li>@item</li>
+        }
+    </ul>
+</body>
+</html>
