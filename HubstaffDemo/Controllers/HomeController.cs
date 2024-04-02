@@ -8,6 +8,11 @@ namespace HubstaffDemo.Controllers
 {
     public class HomeController : Controller
     {
+
+        //hi mam
+        // hi rocky
+        // hi rahul //
+
         public ActionResult Index()
         {
             return View();
